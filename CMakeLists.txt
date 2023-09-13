@@ -9,6 +9,7 @@ project(
   HOMEPAGE_URL "https://github.com/pasichDev/NosoCpp"
 )
 
+# Source Files
 set(SOURCE_FILES
     src/nCore.cpp
     src/nCripto.cpp
@@ -17,6 +18,7 @@ set(SOURCE_FILES
     src/WalletObject.cpp
 )
 
+# Header Files
 set(INSTALL_HEADER_FILES
   include/Constants.h
   include/nCore.h
@@ -26,6 +28,12 @@ set(INSTALL_HEADER_FILES
   include/WalletObject.h
 )
 
+# Shared Exports
+set(NOSOCPP_SHARED_BASE_NAME "shared")
+set(NOSOCPP_SHARED_EXPORTS "shared_exports")
+
+string(TOLOWER ${PROJECT_NAME} NOSOCPP_LIB_NAME)
+
 # Add the library source SHARED
 if (NOSOCPP_MAKE_SHARED)
   add_library(NosoCpp SHARED
@@ -34,11 +42,11 @@ if (NOSOCPP_MAKE_SHARED)
 
   include (GenerateExportHeader)
 
-  # generates the export header shared_EXPORTS.h automatically
+  # generates the export header shared_exports.h automatically
   GENERATE_EXPORT_HEADER(NosoCpp
-      BASE_NAME shared
-      EXPORT_MACRO_NAME shared_EXPORTS
-      EXPORT_FILE_NAME shared_EXPORTS.h
+      BASE_NAME ${NOSOCPP_SHARED_BASE_NAME}
+      EXPORT_MACRO_NAME ${NOSOCPP_SHARED_EXPORTS}
+      EXPORT_FILE_NAME ${NOSOCPP_SHARED_EXPORTS}.h
       STATIC_DEFINE SHARED_EXPORTS_BUILT_AS_STATIC
   )
 
@@ -48,9 +56,10 @@ if (NOSOCPP_MAKE_SHARED)
   )
 
   set(
-    CPACK_PACKAGE_NAME "libnosocpp"
+    CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}"
   )
 endif()
+# Add the library source SHARED
 
 # Add the library source STATIC
 if (NOSOCPP_MAKE_STATIC)
@@ -58,9 +67,10 @@ if (NOSOCPP_MAKE_STATIC)
     ${SOURCE_FILES}
   )
   set(
-    CPACK_PACKAGE_NAME "libnosocpp-dev"
+    CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}-dev"
   )
 endif()
+# Add the library source STATIC
 
 # Set the lib version, public API header and Windows Export symbols
 set_target_properties(NosoCpp PROPERTIES
@@ -88,7 +98,7 @@ find_package(Botan REQUIRED)
 target_link_libraries(NosoCpp PRIVATE Botan::Botan)
 
 # OS and CPack configuration
-## Linux
+## Linux or Apple
 if(LINUX OR APPLE)
 
   message(STATUS
@@ -104,6 +114,7 @@ if(LINUX OR APPLE)
 
   install(TARGETS NosoCpp
       LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
       PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   install(FILES
@@ -111,6 +122,7 @@ if(LINUX OR APPLE)
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
   )
 endif()
+## Linux or Apple
 
 ## Windows
 if(WINDOWS)
@@ -121,6 +133,7 @@ if(WINDOWS)
 
   install(TARGETS NosoCpp
       LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
       PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   install(FILES
@@ -130,19 +143,22 @@ if(WINDOWS)
 
   if(NOSOCPP_MAKE_SHARED)
     install(FILES
-      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
+      #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
+      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nosocpp.dll
       DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
   endif()
 
   if(NOSOCPP_MAKE_STATIC)
     install(FILES
-      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
+      #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
+      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nosocpp.lib
       DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
   endif()
 
 endif()
+## Windows
 
 install(FILES
   ${INSTALL_HEADER_FILES}

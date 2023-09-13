@@ -90,7 +90,9 @@ jobs:
           buildPreset: ninja-vcpkg-release-shared
 
       - name: (Shared) List the files
-        run: ls -alF "${{ env.release-shared }}"
+        run: |
+          ls -alF "${{ env.ninja-shared }}"
+          ls -alF "${{ env.release-shared }}"
 
       - name: (Shared) Packaging
         run: |
@@ -111,7 +113,9 @@ jobs:
           buildPreset: ninja-vcpkg-release-static
 
       - name: (Static) List the files
-        run: ls -alF "${{ env.release-static }}"
+        run: |
+          ls -alF "${{ env.ninja-static }}"
+          ls -alF "${{ env.release-static }}"
 
       - name: (Static) Packaging
         run: |
