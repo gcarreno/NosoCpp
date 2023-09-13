@@ -133,8 +133,8 @@ jobs:
         run: |
           (
             if [ ${{ matrix.os }} == "ubuntu-latest" ] ||  [ ${{ matrix.os }} == "macos-latest" ]
-              echo "lib-prefix=lib"
             then
+              echo "lib-prefix=lib"
             else
               echo "lib-prefix="
             fi
