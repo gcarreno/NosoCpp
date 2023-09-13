@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 # Set the project name
 project(
   NosoCpp
-  VERSION 0.2.5
+  VERSION 0.2.6
   DESCRIPTION "NosoC++ is a C++ cryptographic library that provides various cryptographic functions to work with the Noso coin."
   HOMEPAGE_URL "https://github.com/pasichDev/NosoCpp"
 )
@@ -54,10 +54,15 @@ if (NOSOCPP_MAKE_SHARED)
     ${CMAKE_BINARY_DIR}/${NOSOCPP_SHARED_EXPORTS}.h
     DESTINATION include
   )
-
-  set(
-    CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}"
-  )
+  if (MSVC)
+    set(
+      CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}-shared"
+    )
+  else()
+    set(
+      CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}"
+    )
+  endif()
 endif()
 # Add the library source SHARED
 
@@ -66,13 +71,19 @@ if (NOSOCPP_MAKE_STATIC)
   add_library(NosoCpp STATIC
     ${NOSO_SOURCE_FILES}
   )
-  set(
-    CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}-dev"
-  )
+  if (MSVC)
+    set(
+      CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}-static"
+    )
+  else()
+    set(
+      CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}-dev"
+    )
+  endif()
 endif()
 # Add the library source STATIC
 
-# Set the lib version, public API header and Windows Export symbols
+# Set the lib version, public API header
 set_target_properties(NosoCpp PROPERTIES
   VERSION ${PROJECT_VERSION}
   PUBLIC_HEADER include/${PROJECT_NAME}.h
