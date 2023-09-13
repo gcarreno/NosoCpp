@@ -6,12 +6,12 @@ permissions:
 on:
 
   push:
-    branches: [ main ]
+    branches: [ main, test-botan ]
     tags: [ "*" ]
     paths-ignore: [ "*.md" ]
 
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
 
