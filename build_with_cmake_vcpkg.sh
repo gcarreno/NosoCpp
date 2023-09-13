@@ -1,12 +1,17 @@
 #!/bin/bash
 
-GENERATE_PRESET=ninja-multi-vcpkg
-BUILD_PRESET=ninja-vcpkg-release
-#PACKAGE_PRESET_ZIP=package-zip-release
-PACKAGE_PRESET_TGZ=package-tar-gz-release
-PACKAGE_PRESET_DEB=package-deb-release
-#PACKAGE_PRESET_RPM=package-rpm-release
-#PACKAGE_PRESET_NSIS64=package-nsis64-release
+LINK_OPTION="-shared"
+GENERATE_PRESET="ninja-multi-vcpkg${LINK_OPTION}"
+BUILD_PRESET="ninja-vcpkg-release${LINK_OPTION}"
+PACKAGE_PRESET_ZIP="package-zip-release${LINK_OPTION}"
+PACKAGE_PRESET_TGZ="package-tar-gz-release${LINK_OPTION}"
+PACKAGE_PRESET_DEB="package-deb-release${LINK_OPTION}"
+PACKAGE_PRESET_RPM="package-rpm-release${LINK_OPTION}"
+#PACKAGE_PRESET_NSIS64="package-nsis64-release${LINK_OPTION}"
+
+BUILDS="builds"
+
+#WORKFLOW_PRESET="workflow-ninja-vcpkg-linux"
 
 if [ "$1" == "--clean" ]
 then
@@ -20,6 +25,15 @@ then
     echo
     echo "Nothing to clean"
   fi
+fi
+
+if [ "${WORKFLOW_PRESET}" != "" ]
+then
+  echo "#####"
+  echo "# Calling CMake workflow: ${WORKFLOW_PRESET}"
+  echo "#####"
+  cmake --workflow --preset "${WORKFLOW_PRESET}"
+  exit
 fi
 
 echo "#####"

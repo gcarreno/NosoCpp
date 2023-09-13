@@ -9,22 +9,58 @@ project(
   HOMEPAGE_URL "https://github.com/pasichDev/NosoCpp"
 )
 
-# Install rules from GNU
-include(GNUInstallDirs)
-
-## In order to build SHARED and STATIC this needs to be changed and
-## the build script needs to account for it. For the moment, practice
-## building the shared version
-## Have a look at:
-## https://cgold.readthedocs.io/en/latest/tutorials/libraries/static-shared.html
-# Add the library source
-add_library(NosoCpp SHARED
-  src/nCore.cpp
-  src/nCripto.cpp
-  src/NosoCpp.cpp
-  src/nUtils.cpp
-  src/WalletObject.cpp
+set(SOURCE_FILES
+    src/nCore.cpp
+    src/nCripto.cpp
+    src/NosoCpp.cpp
+    src/nUtils.cpp
+    src/WalletObject.cpp
 )
+
+set(INSTALL_HEADER_FILES
+  include/Constants.h
+  include/nCore.h
+  include/nCripto.h
+  include/nUtils.h
+  include/Objects.h
+  include/WalletObject.h
+)
+
+# Add the library source SHARED
+if (NOSOCPP_MAKE_SHARED)
+  add_library(NosoCpp SHARED
+    ${SOURCE_FILES}
+  )
+
+  include (GenerateExportHeader)
+
+  # generates the export header shared_EXPORTS.h automatically
+  GENERATE_EXPORT_HEADER(NosoCpp
+      BASE_NAME shared
+      EXPORT_MACRO_NAME shared_EXPORTS
+      EXPORT_FILE_NAME shared_EXPORTS.h
+      STATIC_DEFINE SHARED_EXPORTS_BUILT_AS_STATIC
+  )
+
+  install(FILES
+    ${CMAKE_BINARY_DIR}/shared_EXPORTS.h
+    DESTINATION include
+  )
+
+  set(
+    CPACK_PACKAGE_NAME "libnosocpp"
+  )
+endif()
+
+# Add the library source STATIC
+if (NOSOCPP_MAKE_STATIC)
+  add_library(NosoCpp STATIC
+    ${SOURCE_FILES}
+  )
+  set(
+    CPACK_PACKAGE_NAME "libnosocpp-dev"
+  )
+endif()
 
 # Set the lib version, public API header and Windows Export symbols
 set_target_properties(NosoCpp PROPERTIES
@@ -51,13 +87,17 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(Botan REQUIRED)
 target_link_libraries(NosoCpp PRIVATE Botan::Botan)
 
-# CPack configuration
+# OS and CPack configuration
 ## Linux
 if(LINUX OR APPLE)
 
 message(STATUS
   "Configuring CPack for Linux or Apple"
 )
+
+# Install rules from GNU
+include(GNUInstallDirs)
+
 
 set_target_properties(NosoCpp PROPERTIES
   SOVERSION 1
@@ -88,15 +128,11 @@ install(FILES
     ${CMAKE_BINARY_DIR}/nosocpp.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
+
 endif()
 
 install(FILES
-  include/Constants.h
-  include/nCore.h
-  include/nCripto.h
-  include/nUtils.h
-  include/Objects.h
-  include/WalletObject.h
+  ${INSTALL_HEADER_FILES}
   DESTINATION include
 )
 
