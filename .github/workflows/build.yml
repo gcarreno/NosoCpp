@@ -103,7 +103,7 @@ jobs:
           elif [ ${{ matrix.os }} == 'macos-latest' ]; then
             cpack --preset package-tar-gz-release-shared
           fi
-          git tag --list 'v[0-9]*'
+          echo "GIT Tags: $(git tag --list 'v[0-9]*')"
 
       - name: (Static) Run CMake+vcpkg+Ninja to build packages and generate/build the code.
         uses: lukka/run-cmake@v10
