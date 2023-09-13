@@ -91,49 +91,57 @@ target_link_libraries(NosoCpp PRIVATE Botan::Botan)
 ## Linux
 if(LINUX OR APPLE)
 
-message(STATUS
-  "Configuring CPack for Linux or Apple"
-)
+  message(STATUS
+    "Configuring CPack for Linux or Apple"
+  )
 
-# Install rules from GNU
-include(GNUInstallDirs)
+  # Install rules from GNU
+  include(GNUInstallDirs)
 
-set_target_properties(NosoCpp PROPERTIES
-  SOVERSION 1
-)
+  set_target_properties(NosoCpp PROPERTIES
+    SOVERSION 1
+  )
 
-install(TARGETS NosoCpp
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-install(FILES
-    ${CMAKE_BINARY_DIR}/nosocpp.pc
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-)
+  install(TARGETS NosoCpp
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+  install(FILES
+      ${CMAKE_BINARY_DIR}/nosocpp.pc
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+  )
 endif()
 
 ## Windows
 if(WINDOWS)
 
-message(STATUS
-  "Configuring CPack for Windows"
-)
+  message(STATUS
+    "Configuring CPack for Windows"
+  )
 
-install(TARGETS NosoCpp
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-install(FILES
-    ${CMAKE_BINARY_DIR}/nosocpp.pc
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-)
+  install(TARGETS NosoCpp
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+  install(FILES
+      ${CMAKE_BINARY_DIR}/nosocpp.pc
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+  )
 
-##
-#  install(FILES ${wxWidgets_LIB_DIR}/wxbase315u_vc_custom.dll DESTINATION bin)
-##
+  if(NOSOCPP_MAKE_SHARED)
+    install(FILES
+      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+  endif()
 
-include(InstallRequiredSystemLibraries)
+  if(NOSOCPP_MAKE_STATIC)
+    install(FILES
+      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+  endif()
+
 endif()
 
 install(FILES
