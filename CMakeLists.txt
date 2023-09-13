@@ -121,7 +121,7 @@ message(STATUS
 
 install(TARGETS NosoCpp
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 install(FILES
@@ -133,7 +133,7 @@ install(FILES
 #  install(FILES ${wxWidgets_LIB_DIR}/wxbase315u_vc_custom.dll DESTINATION bin)
 ##
 
-#include(InstallRequiredSystemLibraries)
+include(InstallRequiredSystemLibraries)
 endif()
 
 install(FILES
