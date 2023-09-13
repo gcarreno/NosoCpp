@@ -140,28 +140,12 @@ if(MSVC)
       PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
 
-  include(InstallRequiredSystemLibraries)
+  #include(InstallRequiredSystemLibraries)
 
   install(FILES
       ${CMAKE_BINARY_DIR}/${NOSOCPP_LIB_NAME}.pc
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
   )
-
-  #if(NOSOCPP_MAKE_SHARED)
-  #  install(FILES
-  #    #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${NOSOCPP_LIB_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
-  #    ${CMAKE_BINARY_DIR}/Release/nosocpp.dll
-  #    DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  #  )
-  #endif()
-
-  #if(NOSOCPP_MAKE_STATIC)
-  #  install(FILES
-  #    #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${NOSOCPP_LIB_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
-  #    ${CMAKE_BINARY_DIR}/Release/nosocpp.lib
-  #    DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  #  )
-  #endif()
 
 endif()
 ## Windows
