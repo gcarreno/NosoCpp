@@ -143,6 +143,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-tags: true
 
       - name: GIT Tags
         run: echo "GIT Tags $(git tag --list \"v[0-9]*\")"
