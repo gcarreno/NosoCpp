@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 # Set the project name
 project(
   NosoCpp
-  VERSION 0.1.10
+  VERSION 0.1.11
   DESCRIPTION "NosoC++ is a C++ cryptographic library that provides various cryptographic functions to work with the Noso coin."
   HOMEPAGE_URL "https://github.com/pasichDev/NosoCpp"
 )
