@@ -146,9 +146,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: GIT Tags
-        run: echo "GIT Tags $(git tag --list \"v[0-9]*\")"
-
       - name: Set output
         id: vars
         run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_ENV"

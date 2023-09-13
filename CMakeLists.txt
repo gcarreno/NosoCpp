@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 # Set the project name
 project(
   NosoCpp
-  VERSION 0.2.4
+  VERSION 0.2.5
   DESCRIPTION "NosoC++ is a C++ cryptographic library that provides various cryptographic functions to work with the Noso coin."
   HOMEPAGE_URL "https://github.com/pasichDev/NosoCpp"
 )
@@ -98,7 +98,6 @@ message(STATUS
 # Install rules from GNU
 include(GNUInstallDirs)
 
-
 set_target_properties(NosoCpp PROPERTIES
   SOVERSION 1
 )
@@ -122,6 +121,7 @@ message(STATUS
 
 install(TARGETS NosoCpp
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 install(FILES
@@ -129,6 +129,11 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
 
+##
+#  install(FILES ${wxWidgets_LIB_DIR}/wxbase315u_vc_custom.dll DESTINATION bin)
+##
+
+#include(InstallRequiredSystemLibraries)
 endif()
 
 install(FILES
