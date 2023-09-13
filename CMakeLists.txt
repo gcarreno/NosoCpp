@@ -10,7 +10,7 @@ project(
 )
 
 # Source Files
-set(SOURCE_FILES
+set(NOSO_SOURCE_FILES
     src/nCore.cpp
     src/nCripto.cpp
     src/NosoCpp.cpp
@@ -19,7 +19,7 @@ set(SOURCE_FILES
 )
 
 # Header Files
-set(INSTALL_HEADER_FILES
+set(NOSO_INSTALL_HEADER_FILES
   include/Constants.h
   include/nCore.h
   include/nCripto.h
@@ -37,7 +37,7 @@ string(TOLOWER ${PROJECT_NAME} NOSOCPP_LIB_NAME)
 # Add the library source SHARED
 if (NOSOCPP_MAKE_SHARED)
   add_library(NosoCpp SHARED
-    ${SOURCE_FILES}
+    ${NOSO_SOURCE_FILES}
   )
 
   include (GenerateExportHeader)
@@ -51,7 +51,7 @@ if (NOSOCPP_MAKE_SHARED)
   )
 
   install(FILES
-    ${CMAKE_BINARY_DIR}/shared_EXPORTS.h
+    ${CMAKE_BINARY_DIR}/${NOSOCPP_SHARED_EXPORTS}.h
     DESTINATION include
   )
 
@@ -64,7 +64,7 @@ endif()
 # Add the library source STATIC
 if (NOSOCPP_MAKE_STATIC)
   add_library(NosoCpp STATIC
-    ${SOURCE_FILES}
+    ${NOSO_SOURCE_FILES}
   )
   set(
     CPACK_PACKAGE_NAME "${CMAKE_SHARED_LIBRARY_PREFIX}${NOSOCPP_LIB_NAME}-dev"
@@ -75,8 +75,8 @@ endif()
 # Set the lib version, public API header and Windows Export symbols
 set_target_properties(NosoCpp PROPERTIES
   VERSION ${PROJECT_VERSION}
-  PUBLIC_HEADER include/NosoCpp.h
-  OUTPUT_NAME nosocpp
+  PUBLIC_HEADER include/${PROJECT_NAME}.h
+  OUTPUT_NAME ${NOSOCPP_LIB_NAME}
   CXX_STANDARD 20
 )
 
@@ -107,6 +107,9 @@ if(LINUX OR APPLE)
 
   # Install rules from GNU
   include(GNUInstallDirs)
+  # Lower case on these
+  set( DOCDIR ${CMAKE_INSTALL_DATAROOTDIR}/doc/${NOSOCPP_LIB_NAME} )
+  set( CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATAROOTDIR}/doc/${NOSOCPP_LIB_NAME} )
 
   set_target_properties(NosoCpp PROPERTIES
     SOVERSION 1
@@ -118,7 +121,7 @@ if(LINUX OR APPLE)
       PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   install(FILES
-      ${CMAKE_BINARY_DIR}/nosocpp.pc
+      ${CMAKE_BINARY_DIR}/${NOSOCPP_LIB_NAME}.pc
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
   )
 endif()
@@ -137,13 +140,13 @@ if(WINDOWS)
       PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   install(FILES
-      ${CMAKE_BINARY_DIR}/nosocpp.pc
+      ${CMAKE_BINARY_DIR}/${NOSOCPP_LIB_NAME}.pc
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
   )
 
   if(NOSOCPP_MAKE_SHARED)
     install(FILES
-      #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
+      #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${NOSOCPP_LIB_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
       ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nosocpp.dll
       DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
@@ -151,7 +154,7 @@ if(WINDOWS)
 
   if(NOSOCPP_MAKE_STATIC)
     install(FILES
-      #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${OUTPUT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
+      #${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${NOSOCPP_LIB_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX}
       ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/nosocpp.lib
       DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
@@ -161,7 +164,7 @@ endif()
 ## Windows
 
 install(FILES
-  ${INSTALL_HEADER_FILES}
+  ${NOSO_INSTALL_HEADER_FILES}
   DESTINATION include
 )
 
