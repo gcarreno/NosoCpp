@@ -28,6 +28,7 @@ env:
   project-name: NosoCpp
   lib-name: nosocpp
   cliff-cfg: cliff.toml
+  ninja: ninja-multi-vcpkg
   ninja-shared: ${{ github.workspace }}/builds/ninja-multi-vcpkg-shared
   release-shared: ${{ github.workspace }}/builds/ninja-multi-vcpkg-shared/Release
   debug-shared: ${{ github.workspace }}/builds/ninja-multi-vcpkg-shared/Debug
@@ -171,10 +172,15 @@ jobs:
           name: ${{ env.project-name }} ${{ env.tag }}
           body: ${{ steps.git-cliff.outputs.content }}
           files: |
-            ${{ env.project-name }}-${{ inputs.win }}/*.zip
-            ${{ env.project-name }}-${{ inputs.lin }}/*.tar.gz
-            ${{ env.project-name }}-${{ inputs.lin }}/*.deb
-            ${{ env.project-name }}-${{ inputs.lin }}/*.rpm
-            ${{ env.project-name }}-${{ inputs.osx }}/*.tar.gz
+            ${{ env.project-name }}-${{ inputs.win }}/${{ env.ninja }}-shared/*.zip
+            ${{ env.project-name }}-${{ inputs.win }}/${{ env.ninja }}-static/*.zip
+            ${{ env.project-name }}-${{ inputs.lin }}/${{ env.ninja }}-shared/*.tar.gz
+            ${{ env.project-name }}-${{ inputs.lin }}/${{ env.ninja }}-static/*.tar.gz
+            ${{ env.project-name }}-${{ inputs.lin }}/${{ env.ninja }}-shared/*.deb
+            ${{ env.project-name }}-${{ inputs.lin }}/${{ env.ninja }}-static/*.deb
+            ${{ env.project-name }}-${{ inputs.lin }}/${{ env.ninja }}-shared/*.rpm
+            ${{ env.project-name }}-${{ inputs.lin }}/${{ env.ninja }}-static/*.rpm
+            ${{ env.project-name }}-${{ inputs.osx }}/${{ env.ninja }}-shared/*.tar.gz
+            ${{ env.project-name }}-${{ inputs.osx }}/${{ env.ninja }}-static/*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
