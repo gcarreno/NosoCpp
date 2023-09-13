@@ -2,8 +2,8 @@
     "version": 6,
     "cmakeMinimumRequired": {
         "major": 3,
-        "minor": 21,
-        "patch": 0
+        "minor": 25,
+        "patch": 1
     },
     "configurePresets": [
         {
@@ -36,12 +36,20 @@
     ],
     "buildPresets": [
         {
+            "name": "build-ninja-vcpkg",
+            "configurePreset": "ninja-multi-vcpkg",
+            "hidden": true,
+            "cleanFirst": true
+        },
+        {
             "name": "ninja-vcpkg-debug",
             "configurePreset": "ninja-multi-vcpkg",
             "displayName": "Build (Debug)",
             "description": "Build with Ninja/vcpkg (Debug)",
             "configuration": "Debug",
-            "cleanFirst": true
+            "inherits": [
+                "build-ninja-vcpkg"
+            ]
         },
         {
             "name": "ninja-vcpkg-release",
@@ -49,20 +57,30 @@
             "displayName": "Build (Release)",
             "description": "Build with Ninja/vcpkg (Release)",
             "configuration": "Release",
-            "cleanFirst": false
+            "inherits": [
+                "build-ninja-vcpkg"
+            ]
         },
         {
             "name": "ninja-vcpkg",
             "configurePreset": "ninja-multi-vcpkg",
             "displayName": "Build",
             "description": "Build with Ninja/vcpkg",
-            "cleanFirst": true
+            "inherits": [
+                "build-ninja-vcpkg"
+            ]
         }
     ],
     "testPresets": [
         {
             "name": "test-ninja-vcpkg",
             "configurePreset": "ninja-multi-vcpkg",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "showOnly": "json-v1"
+            },
             "hidden": true
         },
         {
@@ -88,6 +106,10 @@
         {
             "name": "package-ninja-vcpkg",
             "configurePreset": "ninja-multi-vcpkg",
+            "output": {
+                "debug": false,
+                "verbose": false
+            },
             "hidden": true
         },
         {
