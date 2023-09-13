@@ -136,6 +136,8 @@ jobs:
           path: |
             ${{ env.ninja-shared }}/lib${{ env.lib-name }}-*
             ${{ env.ninja-static }}/lib${{ env.lib-name }}-*
+            ${{ env.ninja-shared }}/${{ env.lib-name }}-*
+            ${{ env.ninja-static }}/${{ env.lib-name }}-*
 
   package-release:
     if: contains(github.ref, '/tags/')
