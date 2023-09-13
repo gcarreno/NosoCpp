@@ -129,15 +129,24 @@ jobs:
             cpack --preset package-tar-gz-release-static
           fi
 
+      - name: Generate lib prefix
+        run: |
+          (
+            if [ ${{ matrix.os }} == "ubuntu-latest" ] ||  [ ${{ matrix.os }} == "macos-latest" ]
+              echo "lib-prefix=lib"
+            then
+            else
+              echo "lib-prefix="
+            fi
+          ) >> "$GITHUB_ENV"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.project-name }}-${{ matrix.triplet }}
           path: |
-            ${{ env.ninja-shared }}/lib${{ env.lib-name }}-*
-            ${{ env.ninja-static }}/lib${{ env.lib-name }}-*
-            ${{ env.ninja-shared }}/${{ env.lib-name }}-*
-            ${{ env.ninja-static }}/${{ env.lib-name }}-*
+            ${{ env.ninja-shared }}/${{ env.lib-prefix }}${{ env.lib-name }}-*
+            ${{ env.ninja-static }}/${{ env.lib-prefix }}${{ env.lib-name }}-*
 
   package-release:
     if: contains(github.ref, '/tags/')
