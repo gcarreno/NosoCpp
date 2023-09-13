@@ -6,7 +6,7 @@ permissions:
 on:
 
   push:
-    branches: [ main ]
+    branches: [ main, fix-windows-dll ]
     tags: [ "*" ]
     paths-ignore: [ "*.md" ]
 
