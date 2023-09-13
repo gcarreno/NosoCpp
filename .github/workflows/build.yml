@@ -144,7 +144,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-tags: true
+          fetch-depth: 0
 
       - name: GIT Tags
         run: echo "GIT Tags $(git tag --list \"v[0-9]*\")"
